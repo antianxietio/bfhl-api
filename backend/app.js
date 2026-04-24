@@ -17,6 +17,10 @@ app.use(express.json());
 app.post("/bfhl", (req, res) => {
   const { data } = req.body;
 
+  if (!Array.isArray(data)) {
+    return res.status(400).json({ error: "Invalid input format" });
+  }
+
   const { validEdges, invalidEntries, duplicateEdges } = processInput(data);
   const filteredEdges = filterMultiParent(validEdges);
 
@@ -57,7 +61,10 @@ app.post("/bfhl", (req, res) => {
       const tree = buildTree(root, graph);
       const depth = getDepth(root, graph);
 
-      if (depth > maxDepth || (depth === maxDepth && root < largestTreeRoot)) {
+      if (
+        depth > maxDepth ||
+        (depth === maxDepth && (largestTreeRoot === "" || root < largestTreeRoot))
+      ) {
         maxDepth = depth;
         largestTreeRoot = root;
       }
@@ -71,7 +78,7 @@ app.post("/bfhl", (req, res) => {
   }
 
   res.json({
-    user_id: "L B UPPILI_20092005",
+    user_id: "lbuppili_20092005",
     email_id: "lu3733@srmist.edu.in",
     college_roll_number: "RA2311026020005",
 
@@ -87,4 +94,8 @@ app.post("/bfhl", (req, res) => {
   });
 });
 
-app.listen(3000, () => console.log("Server running on port 3000"));
+const PORT = process.env.PORT || 10000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
