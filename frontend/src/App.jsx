@@ -20,7 +20,7 @@ export default function App() {
     setLoading(true);
     const data = parseInput(input);
 
-    const res = await axios.post("http://localhost:3000/bfhl", { data });
+    const res = await axios.post("https://bfhl-api-uqq1.onrender.com/bfhl", { data });
 
     setResult(res.data);
     setLoading(false);
